@@ -11,6 +11,12 @@ interface Piece{
     x: number;
     y: number;
     type: PieceType;
+    team: TeamType;
+}
+
+export enum TeamType{
+    OPPONENT,
+    OUR
 }
 
 export enum PieceType{
@@ -27,32 +33,32 @@ const initialBoardState: Piece[] = [];
 
 
 for (let i = 0; i < 8; i++){
-    initialBoardState.push({image: "assets/images/bp.png", x: i, y: 6, type: PieceType.PAWN})
+    initialBoardState.push({image: "assets/images/bp.png", x: i, y: 6, type: PieceType.PAWN, team: TeamType.OPPONENT})
 }
 
 for (let i = 0; i < 8; i++){
-    initialBoardState.push({image: "assets/images/wp.png", x: i, y: 1, type: PieceType.PAWN})
+    initialBoardState.push({image: "assets/images/wp.png", x: i, y: 1, type: PieceType.PAWN, team: TeamType.OUR})
 }
 
-initialBoardState.push({image: "assets/images/bB.png", x: 2, y: 7, type: PieceType.BISHOP})
-initialBoardState.push({image: "assets/images/bK.png", x: 4, y: 7, type:PieceType.KING})
-initialBoardState.push({image: "assets/images/bN.png", x: 1, y: 7, type:PieceType.KNIGHT})
-initialBoardState.push({image: "assets/images/bQ.png", x: 3, y: 7, type:PieceType.QUEEN})
-initialBoardState.push({image: "assets/images/bR.png", x: 0, y: 7, type:PieceType.ROOK})
+initialBoardState.push({image: "assets/images/bB.png", x: 2, y: 7, type: PieceType.BISHOP, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bK.png", x: 4, y: 7, type:PieceType.KING, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bN.png", x: 1, y: 7, type:PieceType.KNIGHT, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bQ.png", x: 3, y: 7, type:PieceType.QUEEN, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bR.png", x: 0, y: 7, type:PieceType.ROOK, team: TeamType.OPPONENT})
 
-initialBoardState.push({image: "assets/images/bB.png", x: 5, y: 7, type: PieceType.BISHOP})
-initialBoardState.push({image: "assets/images/bN.png", x: 6, y: 7, type:PieceType.KNIGHT})
-initialBoardState.push({image: "assets/images/bR.png", x: 7, y: 7, type:PieceType.ROOK})
+initialBoardState.push({image: "assets/images/bB.png", x: 5, y: 7, type: PieceType.BISHOP, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bN.png", x: 6, y: 7, type:PieceType.KNIGHT, team: TeamType.OPPONENT})
+initialBoardState.push({image: "assets/images/bR.png", x: 7, y: 7, type:PieceType.ROOK, team: TeamType.OPPONENT})
 
-initialBoardState.push({image: "assets/images/wK.png", x: 4, y: 0, type:PieceType.KING})
-initialBoardState.push({image: "assets/images/wB.png", x: 2, y: 0, type: PieceType.BISHOP})
-initialBoardState.push({image: "assets/images/wQ.png", x: 3, y: 0, type:PieceType.QUEEN})
-initialBoardState.push({image: "assets/images/wN.png", x: 1, y: 0, type:PieceType.KNIGHT})
-initialBoardState.push({image: "assets/images/wR.png", x: 0, y: 0, type:PieceType.ROOK})
+initialBoardState.push({image: "assets/images/wK.png", x: 4, y: 0, type:PieceType.KING, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wB.png", x: 2, y: 0, type: PieceType.BISHOP, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wQ.png", x: 3, y: 0, type:PieceType.QUEEN, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wN.png", x: 1, y: 0, type:PieceType.KNIGHT, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wR.png", x: 0, y: 0, type:PieceType.ROOK, team: TeamType.OUR})
 
-initialBoardState.push({image: "assets/images/wB.png", x: 5, y: 0, type: PieceType.BISHOP})
-initialBoardState.push({image: "assets/images/wN.png", x: 6, y: 0, type:PieceType.KNIGHT})
-initialBoardState.push({image: "assets/images/wR.png", x: 7, y: 0, type:PieceType.ROOK})
+initialBoardState.push({image: "assets/images/wB.png", x: 5, y: 0, type: PieceType.BISHOP, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wN.png", x: 6, y: 0, type:PieceType.KNIGHT, team: TeamType.OUR})
+initialBoardState.push({image: "assets/images/wR.png", x: 7, y: 0, type:PieceType.ROOK, team: TeamType.OUR})
 
 
 
@@ -116,26 +122,43 @@ export default function Chessboard() {
         }
     }
 
-    function dropPiece(e: React.MouseEvent){
+    function dropPiece(e: React.MouseEvent) {
         const chessboard = chessboardRef.current;
-        if(activePiece && chessboard){
-            const x = Math.floor((e.clientX - chessboard.offsetLeft) / 100);
-            const y = Math.abs(Math.ceil((e.clientY - chessboard.offsetTop-800) / 100));
-
-            setPieces((value) => {
-                const pieces = value.map(p => {
-                    if (p.x === gridX && p.y === gridY){
-                        referee.isValidMove(gridX, gridY, x, y, p.type);
-                        p.x = x;
-                        p.y = y;  
-                    }
-                    return p;
-                })
-                return pieces;
-            })
-            setActivePiece(null);
+        if (activePiece && chessboard) {
+          const x = Math.floor((e.clientX - chessboard.offsetLeft) / 100);
+          const y = Math.abs(
+            Math.ceil((e.clientY - chessboard.offsetTop - 800) / 100)
+          );
+    
+          //UPDATES THE PIECE POSITION
+          setPieces((value) => {
+            const pieces = value.map((p) => {
+              if (p.x === gridX && p.y === gridY) {
+                const validMove = referee.isValidMove(
+                  gridX,
+                  gridY,
+                  x,
+                  y,
+                  p.type,
+                  p.team
+                );
+    
+                if (validMove) {
+                  p.x = x;
+                  p.y = y;
+                } else {
+                  activePiece.style.position = "relative";
+                  activePiece.style.removeProperty("top");
+                  activePiece.style.removeProperty("left");
+                }
+              }
+              return p;
+            });
+            return pieces;
+          });
+          setActivePiece(null);
         }
-    }
+      }
 
     let board = [];
 
