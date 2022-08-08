@@ -1,6 +1,7 @@
 # Hippodrome
 
-Invented in the early 2000s, Hippodrome was invented as a single-player chess variant out of a need to remediate chess' "obstruction of elegance."
+Invented in the early 2000s, Hippodrome was invented as a single-player chess variant out of a need to remediate chess' "obstruction of elegance." This repository serves
+as an adaptation of the game using React. 
 
 The game starts off with the four knights placed along the bottom row of a 4x4 chess board, and the rest of the twelve non-pawn pieces placed in a random
 fashion. One of the twelve non-pawn pieces is then removed randomly. The objective of the game is to line all of the four knights to the opposite side/row of the board.
