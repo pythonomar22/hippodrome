@@ -16,17 +16,23 @@ import {
         !this.tileIsOccupied(position, boardState)
       );
     }
-  
+
     tileIsOccupied(position: Position, boardState: Piece[]): boolean {
       const piece = boardState.find((p) => samePosition(p.position, position));
-  
+      //console.log(boardState);
       if (piece) {
         return true;
       } else {
         return false;
       }
     }
-  
+    isGameOver(boardState: Piece[]){;
+        if (boardState.includes({enPassant: false, image: `assets/images/knight_b.png`, position: {x: 1, y: 3}, type: 0, team: 2})){
+            return true;
+        }
+        return false;
+    }
+
     tileIsOccupiedByOpponent(
       position: Position,
       boardState: Piece[],
@@ -295,7 +301,9 @@ import {
         let multiplierY = (desiredPosition.y < initialPosition.y) ? -1 : (desiredPosition.y > initialPosition.y) ? 1 : 0;
   
         let passedPosition: Position = {x: initialPosition.x + (i * multiplierX), y: initialPosition.y + (i * multiplierY)};
-  
+        if (this.isGameOver(boardState)){
+            console.log("GAME IS OVER");
+        }
         if(samePosition(passedPosition, desiredPosition)) {
           if(this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
             return true;
@@ -341,4 +349,5 @@ import {
   
       return validMove;
     }
-  }
+
+}

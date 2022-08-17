@@ -23,6 +23,7 @@ export default function Chessboard() {
 
   function grabPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
+    
     const chessboard = chessboardRef.current;
     if (element.classList.contains("chess-piece") && chessboard) {
       const grabX = Math.floor((e.clientX - chessboard.offsetLeft) / GRID_SIZE);
@@ -36,7 +37,6 @@ export default function Chessboard() {
       element.style.position = "absolute";
       element.style.left = `${x}px`;
       element.style.top = `${y}px`;
-
       setActivePiece(element);
     }
   }
@@ -165,6 +165,8 @@ export default function Chessboard() {
       setActivePiece(null);
     }
   }
+
+
     
 
   let board = [];
